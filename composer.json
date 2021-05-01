@@ -1,0 +1,41 @@
+{
+    "name": "namlee-dev/wordpress-install-template",
+    "description": "template to install custom wordpress",
+    "authors": [
+        {
+            "name": "Nam Lee",
+            "email": "contact@namlee-dev.com"
+        }
+    ],
+    "extra": {
+        "wordpress-install-dir": "wp"
+    },
+    "repositories":[
+        {
+            "type":"composer",
+            "url":"https://wpackagist.org",
+            "only": ["wpackagist-plugin/*", "wpackagist-theme/*"]
+        }
+    ],
+    "require": {
+        "johnpbloch/wordpress": "^5.5",
+        "wpackagist-theme/twentytwenty": "^1.5",
+        "wpackagist-plugin/akismet": "^4.1",
+        "wpackagist-plugin/query-monitor": "^3.6",
+        "wpackagist-plugin/fakerpress": "^0.5.0"
+    },
+    "scripts": {
+        "build-assets":  "cd wp-content/themes/nomDuTheme/assets && parcel build js/main.js --public-url=./",
+        "permission": [
+            "sudo chown -R $USER:www-data .",
+            "sudo find . -type f -exec chmod 664 {} +",
+            "sudo find . -type d -exec chmod 775 {} +",
+            "sudo chmod 644 .htaccess"
+        ],
+        "install": [
+            "cd wp-content/plugins/nomDuPlugin && composer dump-autoload",
+            "composer run build-assets"
+        ],
+        "test-nomPlugin-activation": "wp plugin deactivate nomDuPlugin && wp plugin activate nomDuPlugin"
+    }
+}
